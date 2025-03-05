@@ -3,7 +3,8 @@ import Nav from '@components/Nav'
 import Provider from '@components/Provider'
 export const metadata = {
   title: "Promptopia",
-  description: "Discover and share ai promptes"
+  description: "Discover and share ai promptes",
+  icons: '/favicon.svg'
 }
 const Root = ({ children }) => {
   return (
