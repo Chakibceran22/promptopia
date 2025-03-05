@@ -1,10 +1,11 @@
 "use client"
-import { Suspense, useEffect, useState } from "react"
-import { useSession } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import Form from "@components/Form"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-// Wrapper component to handle Suspense
+// Separate component to handle search params
 const EditPromptContent = () => {
     const searchParams = useSearchParams();
     const [submiting, setSubmiting] = useState(false)
@@ -19,14 +20,19 @@ const EditPromptContent = () => {
     useEffect(() => {
         const id = searchParams.get('id');
         setPromptId(id);
+        
         if(id) {
-            const getPromptDetails = async()=> {
-                const response = await fetch(`/api/prompt/${id}`)
-                const data = await response.json()
-                setPost({
-                    prompt: data.prompt,
-                    tag: data.tag
-                })
+            const getPromptDetails = async () => {
+                try {
+                    const response = await fetch(`/api/prompt/${id}`)
+                    const data = await response.json()
+                    setPost({
+                        prompt: data.prompt,
+                        tag: data.tag
+                    })
+                } catch (error) {
+                    console.error("Failed to fetch prompt details:", error)
+                }
             }
             getPromptDetails();
         }
@@ -35,26 +41,36 @@ const EditPromptContent = () => {
     const updatePrompt = async (e) => {
         e.preventDefault();
         setSubmiting(true)
-        if(!promptId) return alert('Prompt Not Found')
+        
+        if(!promptId) {
+            alert('Prompt Not Found')
+            setSubmiting(false)
+            return
+        }
         
         try {
-            const response = await fetch(`/api/prompt/${promptId}`,{
+            const response = await fetch(`/api/prompt/${promptId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    prompt : post.prompt,
-                    tag : post.tag
+                    prompt: post.prompt,
+                    tag: post.tag
                 })
             })
+            
             if(response.ok){
                 router.push('/')
+            } else {
+                const errorData = await response.json();
+                console.error("Update failed:", errorData);
+                alert('Failed to update prompt')
             }
         } catch (error) {
-            console.log(error)
-        }
-        finally{
+            console.error(error)
+            alert('An error occurred while updating the prompt')
+        } finally {
             setSubmiting(false)
         }
     }
@@ -70,8 +86,8 @@ const EditPromptContent = () => {
     )
 }
 
-// Main component with Suspense wrapper
-const EditPrompt = () => {
+// Wrapper component with Suspense
+const UpdatePromptPage = () => {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <EditPromptContent />
@@ -79,4 +95,4 @@ const EditPrompt = () => {
     )
 }
 
-export default EditPrompt
+export default UpdatePromptPage
