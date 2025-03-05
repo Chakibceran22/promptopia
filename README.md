@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Setup Guide
+
+## Prerequisites
+- Node.js (v16 or later)
+- npm (Node Package Manager)
 
 ## Getting Started
 
-First, run the development server:
-
+### 1. Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Chakibceran22/promptopia/
+cd promptopia
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+Run the following command to install all required project dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Environment Configuration
+1. Locate the `.env.example` file in the project root
+2. Create a new file named `.env.local`
+3. Copy the contents from `.env.example` to `.env.local`
+4. Fill in the following required environment variables:
+   - `GOOGLE_CLIENT_ID`: Your Google OAuth Client ID
+   - `GOOGLE_CLIENT_SECRET`: Your Google OAuth Client Secret
+   - `NEXTAUTH_SECRET`: A random secret used for NextAuth.js encryption
+   - `NEXTAUTH_URL`: Your application's base URL (e.g., `http://localhost:3000`)
+   - `MONGODB_URI`: Your MongoDB connection string
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   **Note:** Obtain these credentials from the Google Cloud Console for OAuth authentication and mongodb data base connection string.
 
-## Learn More
+### 4. Run the Development Server
+Start the development server with:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 5. Access the Application
+Open your browser and navigate to `http://localhost:3000`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Troubleshooting
+- Ensure all environment variables are correctly filled out
+- Verify that you have the latest version of Node.js installed
+- Check that all dependencies are installed correctly
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Additional Resources
+- [Next.js Documentation](https://nextjs.org/docs)
+- [NextAuth.js Documentation](https://next-auth.js.org/)
+- [Google OAuth Setup Guide](https://developers.google.com/identity/protocols/oauth2)
