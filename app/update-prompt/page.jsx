@@ -1,13 +1,14 @@
 "use client"
 import { Suspense, useEffect, useState } from "react"
-import { useSession } from "@node_modules/next-auth/react"
-import { useRouter, useSearchParams } from "@node_modules/next/navigation"
+import { useSession } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Form from "@components/Form"
 
-const EditPrompt = () => {
+// Wrapper component to handle Suspense
+const EditPromptContent = () => {
+    const searchParams = useSearchParams();
     const [submiting, setSubmiting] = useState(false)
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [promptId, setPromptId] = useState(null);
 
     const [post, setPost] = useState({
@@ -57,15 +58,23 @@ const EditPrompt = () => {
             setSubmiting(false)
         }
     }
+
+    return (
+        <Form
+            type="Edit"
+            post={post}
+            setPost={setPost}
+            submiting={submiting}
+            handleSubmit={updatePrompt}
+        />
+    )
+}
+
+// Main component with Suspense wrapper
+const EditPrompt = () => {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <Form
-                type="Edit"
-                post={post}
-                setPost={setPost}
-                submiting={submiting}
-                handleSubmit={updatePrompt}
-            />
+            <EditPromptContent />
         </Suspense>
     )
 }
